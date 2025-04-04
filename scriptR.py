@@ -3,20 +3,17 @@ import requests
 import time
 import re
 
-# Configura el puerto serial
-SERIAL_PORT = ''  # Cambia esto según tu sistema ('COMx' en Windows)
+SERIAL_PORT = ''
 BAUD_RATE = 9600
 
-# URL de tu API (puerto 3000)
-API_URL = ''  # Ajusta si tu ruta es distinta
+API_URL = ''  
 
-# Expresión regular para extraer los datos
 PATRON = re.compile(r'Humidity:\s*([\d.]+),Temperature:\s*([\d.]+)')
 
 def leer_datos_arduino():
     try:
         with serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=2) as arduino:
-            time.sleep(2)  # espera a que se inicialice el puerto
+            time.sleep(2) 
             while True:
                 linea = arduino.readline().decode('utf-8').strip()
                 if linea:
@@ -41,11 +38,11 @@ def enviar_a_api(datos):
     try:
         response = requests.post(API_URL, json=datos)
         if response.status_code == 200:
-            print("✅ Datos enviados correctamente:", datos)
+            print("Datos enviados correctamente:", datos)
         else:
-            print(f"❌ Error al enviar datos ({response.status_code}): {response.text}")
+            print(f"Error al enviar datos ({response.status_code}): {response.text}")
     except requests.RequestException as e:
-        print(f"❌ Error de conexión con la API: {e}")
+        print(f"Error de conexión con la API: {e}")
 
-if __name__ == '__main__':
-    leer_datos_arduino()
+
+leer_datos_arduino()
